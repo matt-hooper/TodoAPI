@@ -50,25 +50,25 @@ namespace TodoApi
                 endpoints.MapControllers();
             });
 
-            // var builder = new ODataConventionModelBuilder(app.ApplicationServices);
+            var builder = new ODataConventionModelBuilder(app.ApplicationServices);
 
-            // builder.EntitySet<TodoItem>("TodoItemsOData");
+            builder.EntitySet<TodoItem>("TodoItems");
 
-            // app.UseMvc(routeBuilder =>
-            // {
-            //     // and this line to enable OData query option, for example $filter
-            //     routeBuilder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
-
-            //     routeBuilder.MapODataServiceRoute("ODataRoute", "odata", builder.GetEdmModel());
-
-            //     // uncomment the following line to Work-around for #1175 in beta1
-            //     // routeBuilder.EnableDependencyInjection();
-            // });
             app.UseMvc(routeBuilder =>
             {
+                // and this line to enable OData query option, for example $filter
+                routeBuilder.Select().Expand().Filter().OrderBy().MaxTop(100).Count();
+
+                routeBuilder.MapODataServiceRoute("ODataRoute", "api", builder.GetEdmModel());
+
+                // uncomment the following line to Work-around for #1175 in beta1
                 routeBuilder.EnableDependencyInjection();
-                routeBuilder.Expand().Select().Count().OrderBy().Filter();
             });
+            // app.UseMvc(routeBuilder =>
+            // {
+            //     routeBuilder.EnableDependencyInjection();
+            //     routeBuilder.Expand().Select().Count().OrderBy().Filter();
+            // });
 
         }
     }
